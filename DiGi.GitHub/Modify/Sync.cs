@@ -1,4 +1,5 @@
-﻿using LibGit2Sharp;
+﻿using DiGi.GitHub.Classes;
+using LibGit2Sharp;
 using System;
 using System.IO;
 
@@ -6,75 +7,87 @@ namespace DiGi.GitHub
 {
     public static partial class Modify
     {
-        public static void Sync(string[] solutionPaths, string githubUrl, string username, string token)
+        public static void Sync(string[]? solutionDirectories, GitHubConfigurationFile? gitHubConfigurationFile)
         {
-            foreach (var path in solutionPaths)
+            if (solutionDirectories is null || gitHubConfigurationFile?.Url is null || gitHubConfigurationFile?.Username is null || gitHubConfigurationFile?.Token is null)
             {
-                if (!Directory.Exists(path))
+                return;
+            }
+
+            foreach (string solutionDirectory in solutionDirectories)
+            {
+                if (solutionDirectory is null || !Directory.Exists(solutionDirectory))
                 {
-                    //Folder does not exist
+                    //Directory does not exists
                     continue;
                 }
 
-                //Syncing solution
-
-                try
+                if (!Repository.IsValid(solutionDirectory))
                 {
                     // Clone if repo doesn't exist
-                    if (!Repository.IsValid(path))
-                    {
-                        //Cloning repository
-                        Repository.Clone(githubUrl, path);
-                    }
-
-                    using var repo = new Repository(path);
-
-                    // Determine main branch
-                    var masterBranch = repo.Branches["master"] ?? repo.Branches["main"];
-                    if (masterBranch == null)
-                    {
-                        //No master/main branch found, skipping.
-                        continue;
-                    }
-
-                    // Checkout master/main and pull latest changes
-                    Commands.Checkout(repo, masterBranch);
-                    Pull(repo, username, token);
-
-                    // Create a new branch
-                    string branchName = $"auto-sync/{DateTime.Now:yyyyMMdd_HHmm}";
-                    var branch = repo.Branches[branchName] ?? repo.CreateBranch(branchName, masterBranch.Tip);
-                    Commands.Checkout(repo, branch);
-
-                    // Stage all changes
-                    Commands.Stage(repo, "*");
-
-                    // Commit changes if any
-                    if (repo.RetrieveStatus().IsDirty)
-                    {
-                        var author = new Signature(username, $"{username}@example.com", DateTimeOffset.Now);
-                        repo.Commit($"Auto-sync commit on {branchName}", author, author);
-                        //Changes committed.
-                    }
-                    else
-                    {
-                        //No changes to commit.
-                    }
-
-                    // Push branch
-                    var remote = repo.Network.Remotes["origin"];
-                    var pushOptions = new PushOptions
-                    {
-                        CredentialsProvider = (_url, _user, _cred) =>
-                            new UsernamePasswordCredentials { Username = username, Password = token }
-                    };
-                    repo.Network.Push(branch, pushOptions);
-                    // Branch pushed successfully!
+                    Repository.Clone(gitHubConfigurationFile.Url, solutionDirectory);
                 }
-                catch (Exception ex)
+
+                using Repository repository = new(solutionDirectory);
+
+                if (repository.Info.IsHeadDetached)
                 {
-                    //Error
+                    continue;
                 }
+
+                string currentBranch = repository.Head.FriendlyName;
+
+                // Determine main branch
+                Branch mainBranch = repository.Branches[Constans.Names.Branch.Main];
+                if (mainBranch == null)
+                {
+                    //Main branch does not found
+                    continue;
+                }
+
+                // Checkout main/master and pull latest changes
+                Commands.Checkout(repository, mainBranch);
+                Pull(repository, gitHubConfigurationFile);
+
+                // Create a new branch
+                string branchName = $"auto-sync/{DateTime.Now:yyyyMMdd_HHmm}";
+                Branch branch = repository.Branches[branchName] ?? repository.CreateBranch(branchName, mainBranch.Tip);
+                Commands.Checkout(repository, branch);
+
+                // Stage all changes
+                Commands.Stage(repository, "*");
+
+                // Commit if there are changes
+                if (repository.RetrieveStatus().IsDirty)
+                {
+                    Signature? signature = Create.Signature(gitHubConfigurationFile);
+                    repository.Commit($"Auto-sync commit on {branchName}", signature, signature);
+                }
+                else
+                {
+                    //No changes to commit
+                }
+
+                // Ensure remote exists
+                Remote? remote = repository.Network.Remotes[Constans.Names.Remote.Origin];
+                if (remote == null)
+                {
+                    //No 'origin' remote found. Adding one.
+                    remote = repository.Network.Remotes.Add(Constans.Names.Remote.Origin, gitHubConfigurationFile.Url);
+                }
+
+                if (remote == null)
+                {
+                    //No 'origin' remote found
+                    continue;
+                }
+
+                // Link local branch to remote upstream
+                repository.Branches.Update(branch, b => b.Remote = remote.Name, b => b.UpstreamBranch = branch.CanonicalName);
+
+                repository.Network.Push(branch, Create.PushOptions(gitHubConfigurationFile));
+
+                //Pushed successfully
             }
         }
     }

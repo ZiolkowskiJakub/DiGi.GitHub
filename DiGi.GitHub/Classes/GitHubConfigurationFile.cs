@@ -11,13 +11,13 @@ namespace DiGi.GitHub.Classes
         {
         }
 
-        public GitHubConfigurationFile(JsonObject jsonObject)
+        public GitHubConfigurationFile(JsonObject? jsonObject)
             : base(jsonObject)
         {
         }
 
-        public GitHubConfigurationFile(GitHubConfigurationFile gitHubConfigurationFile)
-            : base(gitHubConfigurationFile)
+        public GitHubConfigurationFile(ConfigurationFile? configurationFile)
+            : base(configurationFile)
         {
         }
 
@@ -26,12 +26,12 @@ namespace DiGi.GitHub.Classes
         {
             get
             {
-                return GetValue<string>(Constans.Names.Email);
+                return GetValue<string>(Constans.Names.GitHubConfigurationFile.Email);
             }
 
             set
             {
-                Add(Constans.Names.Email, value);
+                Add(Constans.Names.GitHubConfigurationFile.Email, value);
             }
         }
 
@@ -40,12 +40,26 @@ namespace DiGi.GitHub.Classes
         {
             get
             {
-                return GetValue<string>(Constans.Names.Token);
+                return GetValue<string>(Constans.Names.GitHubConfigurationFile.Token);
             }
 
             set
             {
-                Add(Constans.Names.Token, value);
+                Add(Constans.Names.GitHubConfigurationFile.Token, value);
+            }
+        }
+
+        [JsonIgnore]
+        public string? Url
+        {
+            get
+            {
+                return GetValue<string>(Constans.Names.GitHubConfigurationFile.Url);
+            }
+
+            set
+            {
+                Add(Constans.Names.GitHubConfigurationFile.Url, value);
             }
         }
 
@@ -54,12 +68,12 @@ namespace DiGi.GitHub.Classes
         {
             get
             {
-                return GetValue<string>(Constans.Names.Username);
+                return GetValue<string>(Constans.Names.GitHubConfigurationFile.Username);
             }
 
             set
             {
-                Add(Constans.Names.Username, value);
+                Add(Constans.Names.GitHubConfigurationFile.Username, value);
             }
         }
     }

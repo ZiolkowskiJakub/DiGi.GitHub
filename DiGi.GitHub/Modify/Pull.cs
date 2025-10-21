@@ -1,5 +1,5 @@
-﻿using LibGit2Sharp;
-using System;
+﻿using DiGi.GitHub.Classes;
+using LibGit2Sharp;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,28 +7,26 @@ namespace DiGi.GitHub
 {
     public static partial class Modify
     {
-        public static void Pull(Repository? repository, string? username, string? token)
-        {
-            if(repository is null || username is null || token is null)
+        public static bool Pull(Repository? repository, GitHubConfigurationFile? gitHubConfigurationFile)
+        { 
+            if(repository is null || gitHubConfigurationFile?.Username is null || gitHubConfigurationFile.Token is null || gitHubConfigurationFile.Email is null)
             {
-                return;
+                return false;
             }
 
-            Remote remote = repository.Network.Remotes["origin"];
-            IEnumerable<string> refSpecs = remote.FetchRefSpecs.Select(x => x.Specification);
-            FetchOptions fetchOptions = new FetchOptions
-            {
-                CredentialsProvider = (_url, _user, _cred) => new UsernamePasswordCredentials { Username = username, Password = token }
-            };
-            Commands.Fetch(repository, remote.Name, refSpecs, fetchOptions, null);
+            Remote remote = repository.Network.Remotes[Constans.Names.Remote.Origin];
+            IEnumerable<string> specifications = remote.FetchRefSpecs.Select(x => x.Specification);
+            Commands.Fetch(repository, remote.Name, specifications, Create.FetchOptions(gitHubConfigurationFile), null);
 
-            Branch master = repository.Branches["master"] ?? repository.Branches["main"];
-            if (master != null)
+            Branch branch = repository.Branches[Constans.Names.Branch.Main];
+            if(branch is null)
             {
-                // Merge latest changes into current branch
-                var merger = new Signature(username, $"{username}@example.com", DateTimeOffset.Now);
-                repository.Merge(master, merger);
+                return false;
             }
+
+            // Merge latest changes into current branch
+            repository.Merge(branch, Create.Signature(gitHubConfigurationFile));
+            return true;
         }
     }
 }
