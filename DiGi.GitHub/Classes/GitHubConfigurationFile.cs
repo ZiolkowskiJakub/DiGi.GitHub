@@ -26,12 +26,12 @@ namespace DiGi.GitHub.Classes
         {
             get
             {
-                return GetValue<string>(Constans.Names.GitHubConfigurationFile.Email);
+                return GetValue<string>(Constants.Names.GitHubConfigurationFile.Email);
             }
 
             set
             {
-                Add(Constans.Names.GitHubConfigurationFile.Email, value);
+                Add(Constants.Names.GitHubConfigurationFile.Email, value);
             }
         }
 
@@ -40,12 +40,12 @@ namespace DiGi.GitHub.Classes
         {
             get
             {
-                return GetValue<string>(Constans.Names.GitHubConfigurationFile.Token);
+                return GetValue<string>(Constants.Names.GitHubConfigurationFile.Token);
             }
 
             set
             {
-                Add(Constans.Names.GitHubConfigurationFile.Token, value);
+                Add(Constants.Names.GitHubConfigurationFile.Token, value);
             }
         }
 
@@ -54,12 +54,12 @@ namespace DiGi.GitHub.Classes
         {
             get
             {
-                return GetValue<string>(Constans.Names.GitHubConfigurationFile.Url);
+                return GetValue<string>(Constants.Names.GitHubConfigurationFile.Url);
             }
 
             set
             {
-                Add(Constans.Names.GitHubConfigurationFile.Url, value);
+                Add(Constants.Names.GitHubConfigurationFile.Url, value);
             }
         }
 
@@ -68,12 +68,12 @@ namespace DiGi.GitHub.Classes
         {
             get
             {
-                return GetValue<string>(Constans.Names.GitHubConfigurationFile.Username);
+                return GetValue<string>(Constants.Names.GitHubConfigurationFile.Username);
             }
 
             set
             {
-                Add(Constans.Names.GitHubConfigurationFile.Username, value);
+                Add(Constants.Names.GitHubConfigurationFile.Username, value);
             }
         }
     }

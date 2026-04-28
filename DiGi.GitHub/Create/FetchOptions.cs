@@ -8,7 +8,7 @@ namespace DiGi.GitHub
         public static FetchOptions? FetchOptions(this GitHubConfigurationFile? gitHubConfigurationFile)
         {
             string? username = gitHubConfigurationFile?.Username;
-            if(username == null)
+            if (username == null)
             {
                 return null;
             }
@@ -23,7 +23,6 @@ namespace DiGi.GitHub
             {
                 CredentialsProvider = (_url, _user, _cred) => new UsernamePasswordCredentials { Username = username, Password = token }
             };
-
         }
     }
 }

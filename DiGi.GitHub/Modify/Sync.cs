@@ -50,10 +50,10 @@ namespace DiGi.GitHub
             }
 
             // Ensure remote exists
-            Remote? remote = repository.Network.Remotes[Constans.Names.Remote.Origin];
+            Remote? remote = repository.Network.Remotes[Constants.Names.Remote.Origin];
             if (remote == null)
             {
-                remote = repository.Network.Remotes.Add(Constans.Names.Remote.Origin, gitHubConfigurationFile.Url);
+                remote = repository.Network.Remotes.Add(Constants.Names.Remote.Origin, gitHubConfigurationFile.Url);
             }
 
             if (remote == null)
@@ -74,7 +74,7 @@ namespace DiGi.GitHub
             }
 
             // Sync master with current branch
-            Branch? masterBranch = repository.Branches[Constans.Names.Branch.Main];
+            Branch? masterBranch = repository.Branches[Constants.Names.Branch.Main];
             if (masterBranch is null)
             {
                 //Master branch does not exists

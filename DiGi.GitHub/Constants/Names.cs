@@ -1,4 +1,4 @@
-﻿namespace DiGi.GitHub.Constans
+﻿namespace DiGi.GitHub.Constants
 {
     public static class Names
     {
@@ -45,7 +45,5 @@
             /// </summary>
             public const string Origin = "origin";
         }
-
-
     }
 }

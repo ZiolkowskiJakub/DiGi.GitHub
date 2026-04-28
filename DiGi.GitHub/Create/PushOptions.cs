@@ -1,5 +1,4 @@
-﻿using DiGi.Core.Classes;
-using DiGi.GitHub.Classes;
+﻿using DiGi.GitHub.Classes;
 using LibGit2Sharp;
 
 namespace DiGi.GitHub
@@ -9,7 +8,7 @@ namespace DiGi.GitHub
         public static PushOptions? PushOptions(this GitHubConfigurationFile? gitHubConfigurationFile)
         {
             string? username = gitHubConfigurationFile?.Username;
-            if(username == null)
+            if (username == null)
             {
                 return null;
             }

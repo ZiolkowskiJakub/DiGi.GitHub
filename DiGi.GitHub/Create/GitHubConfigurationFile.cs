@@ -8,7 +8,7 @@ namespace DiGi.GitHub
         public static GitHubConfigurationFile? GitHubConfigurationFile(string? path)
         {
             ConfigurationFile? configurationFile = Core.Create.ConfigurationFile(path);
-            if(configurationFile is null)
+            if (configurationFile is null)
             {
                 return null;
             }

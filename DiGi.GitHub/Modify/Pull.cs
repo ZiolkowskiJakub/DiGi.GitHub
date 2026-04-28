@@ -7,19 +7,19 @@ namespace DiGi.GitHub
 {
     public static partial class Modify
     {
-        public static bool Pull(Repository? repository, GitHubConfigurationFile? gitHubConfigurationFile, string branchName = Constans.Names.Branch.Main)
-        { 
-            if(repository is null || gitHubConfigurationFile?.Username is null || gitHubConfigurationFile.Token is null || gitHubConfigurationFile.Email is null)
+        public static bool Pull(Repository? repository, GitHubConfigurationFile? gitHubConfigurationFile, string branchName = Constants.Names.Branch.Main)
+        {
+            if (repository is null || gitHubConfigurationFile?.Username is null || gitHubConfigurationFile.Token is null || gitHubConfigurationFile.Email is null)
             {
                 return false;
             }
 
-            Remote remote = repository.Network.Remotes[Constans.Names.Remote.Origin];
+            Remote remote = repository.Network.Remotes[Constants.Names.Remote.Origin];
             IEnumerable<string> specifications = remote.FetchRefSpecs.Select(x => x.Specification);
             Commands.Fetch(repository, remote.Name, specifications, Create.FetchOptions(gitHubConfigurationFile), null);
 
             Branch branch = repository.Branches[branchName];
-            if(branch is null)
+            if (branch is null)
             {
                 return false;
             }
