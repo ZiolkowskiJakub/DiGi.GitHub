@@ -4,23 +4,40 @@ using System.Text.Json.Serialization;
 
 namespace DiGi.GitHub.Classes
 {
+    /// <summary>
+    /// Represents the configuration settings specifically for GitHub integration, extending the base configuration file functionality.
+    /// </summary>
     public class GitHubConfigurationFile : ConfigurationFile
     {
+        /// <summary>
+        /// Initializes a new empty instance of the <see cref="GitHubConfigurationFile"/> class.
+        /// </summary>
         public GitHubConfigurationFile()
             : base()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GitHubConfigurationFile"/> class from a <see cref="JsonObject"/>.
+        /// </summary>
+        /// <param name="jsonObject">The JSON object containing the configuration settings.</param>
         public GitHubConfigurationFile(JsonObject? jsonObject)
             : base(jsonObject)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GitHubConfigurationFile"/> class by copying settings from another <see cref="ConfigurationFile"/>.
+        /// </summary>
+        /// <param name="configurationFile">The source configuration file to copy settings from.</param>
         public GitHubConfigurationFile(ConfigurationFile? configurationFile)
             : base(configurationFile)
         {
         }
 
+        /// <summary>
+        /// Gets or sets the email address associated with the GitHub account.
+        /// </summary>
         [JsonIgnore]
         public string? Email
         {
@@ -35,6 +52,9 @@ namespace DiGi.GitHub.Classes
             }
         }
 
+        /// <summary>
+        /// Gets or sets the personal access token used for GitHub authentication.
+        /// </summary>
         [JsonIgnore]
         public string? Token
         {
@@ -49,6 +69,9 @@ namespace DiGi.GitHub.Classes
             }
         }
 
+        /// <summary>
+        /// Gets or sets the base URL for the GitHub API.
+        /// </summary>
         [JsonIgnore]
         public string? Url
         {
@@ -63,6 +86,9 @@ namespace DiGi.GitHub.Classes
             }
         }
 
+        /// <summary>
+        /// Gets or sets the username for the GitHub account.
+        /// </summary>
         [JsonIgnore]
         public string? Username
         {

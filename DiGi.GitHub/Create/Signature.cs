@@ -5,6 +5,11 @@ namespace DiGi.GitHub
 {
     public static partial class Create
     {
+        /// <summary>
+        /// Creates a <see cref="Signature"/> based on the provided GitHub configuration file.
+        /// </summary>
+        /// <param name="gitHubConfigurationFile">The GitHub configuration file containing the username and email.</param>
+        /// <returns>A new <see cref="Signature"/> instance if both username and email are present; otherwise, null.</returns>
         public static Signature? Signature(this GitHubConfigurationFile? gitHubConfigurationFile)
         {
             string? username = gitHubConfigurationFile?.Username;

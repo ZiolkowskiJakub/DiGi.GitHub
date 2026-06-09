@@ -5,6 +5,11 @@ namespace DiGi.GitHub
 {
     public static partial class Create
     {
+        /// <summary>
+        /// Creates a <see cref="PushOptions"/> instance using the provided GitHub configuration file.
+        /// </summary>
+        /// <param name="gitHubConfigurationFile">The configuration file containing the GitHub username and token.</param>
+        /// <returns>A <see cref="PushOptions"/> object if credentials are valid; otherwise, null.</returns>
         public static PushOptions? PushOptions(this GitHubConfigurationFile? gitHubConfigurationFile)
         {
             string? username = gitHubConfigurationFile?.Username;

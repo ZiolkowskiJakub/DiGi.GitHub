@@ -6,6 +6,15 @@ namespace DiGi.GitHub
 {
     public static partial class Modify
     {
+        /// <summary>
+        /// Synchronizes a local directory with a GitHub repository by performing cloning if necessary, 
+        /// pulling latest changes, committing local modifications, and pushing updates to the remote origin.
+        /// </summary>
+        /// <param name="gitHubConfigurationFile">The configuration object containing the repository URL and authentication credentials.</param>
+        /// <param name="solutionDirectory">The local file system path where the repository is located or should be cloned.</param>
+        /// <param name="branchName">The target branch name to synchronize. If specified, it manages synchronization between the current branch and the main branch.</param>
+        /// <param name="commitMessage">An optional custom message for the commit of local changes. Defaults to "Auto-sync commit" if null.</param>
+        /// <returns>True if the synchronization process was completed successfully; otherwise, false.</returns>
         public static bool Sync(this GitHubConfigurationFile? gitHubConfigurationFile, string? solutionDirectory, string? branchName, string? commitMessage = null)
         {
             if (string.IsNullOrWhiteSpace(solutionDirectory) || gitHubConfigurationFile?.Url is null || gitHubConfigurationFile?.Username is null || gitHubConfigurationFile?.Token is null)
