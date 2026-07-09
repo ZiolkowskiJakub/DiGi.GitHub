@@ -1,4 +1,4 @@
-#### [DiGi\.GitHub](index.md 'index')
+#### [DiGi\.GitHub](DiGi.GitHub.Overview.md 'DiGi\.GitHub\.Overview')
 
 ## DiGi\.GitHub\.Constants Namespace
 ### Classes
